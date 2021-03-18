@@ -3,3 +3,6 @@ This project is based on the implementation of a MOM that provides a means for c
 
 ## Requirements
 [Requirements specification](Documentation/Requirements.md)
+
+## Architecture
+[Architecture specifitaciont](Documentation/Architecture.md)
