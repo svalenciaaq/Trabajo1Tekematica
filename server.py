@@ -3,6 +3,7 @@ import os
 import threading
 import hashlib
 from Queue import queue
+import time
 
 
 # Create Socket (TCP) Connection
@@ -18,6 +19,12 @@ except socket.error as e:
 print('Waitiing for a Connection..')
 ServerSocket.listen(5)
 HashTable = {}
+queu= []
+
+def delete_qeueu(self):
+    return 0
+
+
 
 # Function : For each client 
 def threaded_client(connection):
@@ -28,11 +35,8 @@ def threaded_client(connection):
     password = password.decode()
     name = name.decode()
     password=hashlib.sha256(str.encode(password)).hexdigest() # Password hash using SHA256
-# REGISTERATION PHASE   
-
+ # REGISTERATION PHASE   
     
-
-
 # If new user,  regiter in Hashtable Dictionary  
     if name not in HashTable:
         HashTable[name]=password
@@ -52,9 +56,17 @@ def threaded_client(connection):
         else:
             connection.send(str.encode('Login Failed')) # Response code for login failed
             print('Connection denied : ',name)
+
     while True:
-        break
-    connection.close()
+        cmd= connection.recv(2048).decode()
+        if(cmd == 'queue'):
+            namequeue = connection.recv(2048).decode()
+            nameuser = connection.recv(2048).decode()
+            q = queue(namequeue, nameuser)
+            queu.append(q)
+            print(queu)
+            
+    
 
 while True:
     Client, address = ServerSocket.accept()
