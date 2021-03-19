@@ -11,3 +11,5 @@
 * [FR-09] The system must allow the sending of messages to a queue.
 * [FR-010] The system must allow the reception of messages through the queues.
 * [FR-011] The system must allow the reception of messages through the channels.
+
+## No Functional requirements

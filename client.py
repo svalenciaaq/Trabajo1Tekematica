@@ -26,5 +26,8 @@ response = client.recv(2048)
 response = response.decode()
 
 print(response)
-client.close()
+
+
+def close_connection():
+	return 0
 

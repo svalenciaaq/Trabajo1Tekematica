@@ -2,6 +2,7 @@ import socket
 import os
 import threading
 import hashlib
+from Queue import queue
 
 
 # Create Socket (TCP) Connection
@@ -28,6 +29,10 @@ def threaded_client(connection):
     name = name.decode()
     password=hashlib.sha256(str.encode(password)).hexdigest() # Password hash using SHA256
 # REGISTERATION PHASE   
+
+    
+
+
 # If new user,  regiter in Hashtable Dictionary  
     if name not in HashTable:
         HashTable[name]=password

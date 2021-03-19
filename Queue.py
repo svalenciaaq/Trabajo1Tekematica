@@ -2,7 +2,7 @@ class queue:
     def __init__(self, namequeue,nameuser):
         self.user = nameuser
         self.namequeu = namequeue
-        self.messages =[]
+        self.messages = []
 
     def push(self,x):
         self.messages.append(x)
