@@ -58,13 +58,36 @@ def threaded_client(connection):
             print('Connection denied : ',name)
 
     while True:
+
+        # Commands Queue and Channels
+        # Qeueu- Create a queue
+        # MessageQ= Senda message to a queue
         cmd= connection.recv(2048).decode()
+
+
         if(cmd == 'queue'):
             namequeue = connection.recv(2048).decode()
             nameuser = connection.recv(2048).decode()
             q = queue(namequeue, nameuser)
             queu.append(q)
-            print(queu)
+            
+        if(cmd == 'messageq'):
+            namequeu = connection.recv(2048).decode()
+
+            
+        if(cmd == 'showq'):
+            print('showq')
+            u = connection.recv(2048).decode()
+            for i in queu:
+                print(i)
+                if(i.user == u):
+                    connection.send(str.encode(i.queu))
+        print("exit")      
+
+
+
+
+
             
     
 

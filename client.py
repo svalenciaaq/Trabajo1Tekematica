@@ -1,10 +1,11 @@
+from Queue import queue
 import socket
 
 
 
 # create an ipv4 (AF_INET) socket object using the tcp protocol (SOCK_STREAM)
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
+queues=[]
 option = 0
 # connect the client
 # client.connect((target, port))
@@ -40,7 +41,20 @@ def create_queue():
 	client.send(str.encode("queue"))
 	client.send(str.encode(namequeue + "\n"))
 	client.send(str.encode(name))
+
+
+def show_queues():
+	client.send(str.encode("showq"))
 	
+	client.send(str.encode(name))
+	q = client.recv(2048).decode()
+	queues.append(q)
+	print("\n")
+	print("Queus \n")
+	id= 1
+	for i in queues:
+		print(str(id)+". " + i)
+		id+=1
 
 
 
@@ -57,7 +71,10 @@ while True:
 
 	if option == 1:
 		create_queue()
-		
+
+	if option == 3:
+		show_queues()	
+
 	if option == 7:
 		close_connection()
 		break	
