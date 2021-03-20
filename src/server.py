@@ -1,15 +1,17 @@
 import socket
 import os
+from Queue import queue
 import threading
 import hashlib
-from Queue import queue
+import json
+
 import time
 
 
 # Create Socket (TCP) Connection
 ServerSocket = socket.socket(family = socket.AF_INET, type = socket.SOCK_STREAM) 
-host = '127.0.0.1'
-port = 1233
+host = '192.168.1.104'
+port = 80
 ThreadCount = 0
 try:
     ServerSocket.bind((host, port))
@@ -20,11 +22,33 @@ print('Waitiing for a Connection..')
 ServerSocket.listen(5)
 HashTable = {}
 queu= []
+qe = ""
 
-def delete_qeueu(self):
-    return 0
+def delete_qeueu(x,y):
+    p
+    for i in queu:
+        if(i.user == y):
+            if(i.queu == x):
+                queu.remove(i)
 
+def show_queue():
+    u = connection.recv(2048).decode()
+    qe = ""
+    ro = ""
+    for i in queu:
+        print(i.user)
+        if(i.user == u):
+            print("enter")
+            qe = i.queu
+            ro += qe.rstrip("\n") + " ".rstrip("\n") 
+    print(ro)
+    print(ro + "xd")
+    print("xd")
+    connection.send(str.encode(ro))             
 
+def create_queue(x,y):
+      q = queue(x, y)
+      queu.append(q)
 
 # Function : For each client 
 def threaded_client(connection):
@@ -62,35 +86,25 @@ def threaded_client(connection):
         # Commands Queue and Channels
         # Qeueu- Create a queue
         # MessageQ= Senda message to a queue
-        cmd= connection.recv(2048).decode()
+        z = connection.recv(2048).decode()
+        cmd = z.split(" ")
 
 
-        if(cmd == 'queue'):
-            namequeue = connection.recv(2048).decode()
-            nameuser = connection.recv(2048).decode()
-            q = queue(namequeue, nameuser)
-            queu.append(q)
+        if(cmd[0] == 'queue'):
+            create_queue(cmd[1],name)
             
         if(cmd == 'messageq'):
             namequeu = connection.recv(2048).decode()
 
-            
-        if(cmd == 'showq'):
-            print('showq')
-            u = connection.recv(2048).decode()
-            for i in queu:
-                print(i)
-                if(i.user == u):
-                    connection.send(str.encode(i.queu))
-        print("exit")      
+
+        if(cmd[0] == 'showq'):
+          show_queue()       
+
+        if(cmd[0] == 'deleteq'):
+            delete_qeueu(cmd[1], name)
 
 
-
-
-
-            
-    
-
+        
 while True:
     Client, address = ServerSocket.accept()
     client_handler = threading.Thread(

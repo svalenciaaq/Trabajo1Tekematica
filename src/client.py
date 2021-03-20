@@ -1,4 +1,4 @@
-from Queue import queue
+
 import socket
 
 
@@ -9,7 +9,7 @@ queues=[]
 option = 0
 # connect the client
 # client.connect((target, port))
-client.connect(('127.0.0.1', 1233))
+client.connect(('192.168.1.104', 80))
 response = client.recv(2048)
 # Input UserName
 name = input(response.decode())	
@@ -38,23 +38,28 @@ def close_connection():
 def create_queue():
 	
 	namequeue = input()
-	client.send(str.encode("queue"))
-	client.send(str.encode(namequeue + "\n"))
-	client.send(str.encode(name))
+	msg = "queue" + " " + namequeue 
+	client.send(str.encode(msg))
 
+def delete_queue():
+
+	namequeue = input()
+	msg = "deleteq" + " " + namequeue + " " + name
+	client.send(str.encode(msg))
 
 def show_queues():
 	client.send(str.encode("showq"))
-	
 	client.send(str.encode(name))
-	q = client.recv(2048).decode()
-	queues.append(q)
-	print("\n")
-	print("Queus \n")
-	id= 1
-	for i in queues:
-		print(str(id)+". " + i)
-		id+=1
+	q = client.recv(2048).decode().rstrip("\n")
+	l = q.split(" ")
+	id= 0
+	print(" \n")
+	print("QUEUES \n")
+	for i in l:
+		if i != '':
+			queues.append(i)
+			print(str(id + 1 )+". " + i )
+			id+=1
 
 
 
@@ -71,6 +76,12 @@ while True:
 
 	if option == 1:
 		create_queue()
+		client.close()
+		break
+	
+	if option == 2:
+		delete_queue()
+
 
 	if option == 3:
 		show_queues()	
