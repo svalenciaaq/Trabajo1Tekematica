@@ -1,4 +1,4 @@
-
+import json
 import socket
 
 
@@ -35,11 +35,14 @@ def close_connection():
 	client.close()
 	print("close connection")
 
-def create_queue():
-	
+def create_queue():	
 	namequeue = input()
-	msg = "queue" + " " + namequeue 
-	client.send(str.encode(msg))
+	j = {
+		"cmd": "queue",
+		"namequeu": namequeue
+	}
+	ju = json.dumps(j)
+	client.send(str.encode(ju))
 
 def delete_queue():
 

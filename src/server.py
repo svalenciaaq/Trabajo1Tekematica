@@ -25,7 +25,6 @@ queu= []
 qe = ""
 
 def delete_qeueu(x,y):
-    p
     for i in queu:
         if(i.user == y):
             if(i.queu == x):
@@ -36,14 +35,9 @@ def show_queue():
     qe = ""
     ro = ""
     for i in queu:
-        print(i.user)
         if(i.user == u):
-            print("enter")
             qe = i.queu
             ro += qe.rstrip("\n") + " ".rstrip("\n") 
-    print(ro)
-    print(ro + "xd")
-    print("xd")
     connection.send(str.encode(ro))             
 
 def create_queue(x,y):
@@ -87,21 +81,26 @@ def threaded_client(connection):
         # Qeueu- Create a queue
         # MessageQ= Senda message to a queue
         z = connection.recv(2048).decode()
-        cmd = z.split(" ")
+        
+        cmd = json.loads(z)
 
+        print(cmd)
 
-        if(cmd[0] == 'queue'):
-            create_queue(cmd[1],name)
+        if(cmd["cmd"] == 'queue'):
+            create_queue(cmd["namequeu"],name)
+            break
             
         if(cmd == 'messageq'):
             namequeu = connection.recv(2048).decode()
 
 
         if(cmd[0] == 'showq'):
-          show_queue()       
+          show_queue()
+          break       
 
         if(cmd[0] == 'deleteq'):
             delete_qeueu(cmd[1], name)
+    connection.close()        
 
 
         
