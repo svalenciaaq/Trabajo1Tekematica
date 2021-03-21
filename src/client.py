@@ -70,15 +70,25 @@ def show_queues():
 		"cmd": "showq"
 	}
 	ju = json.dumps(j)
-	client.send(str.encode(ju))
+	enc = str.encode(ju)
+	encoded = base64.b64encode(enc)
+	client.send(encoded)
 	q = client.recv(2048).decode()
 	ju = json.loads(q)
 	print(type(ju["data"]))
 	print(" \n")
 	print("QUEUES \n")
 	
-
-
+def sendq():
+	namequeue= input("Ingrese el nombre de la cola que quiere enviar el mensaje")
+	data = input("Ingrese el mensaje que quiere enviar")
+	j = {
+		"cmd": "sendq",
+		"user": name,
+		"namequeue": namequeue,
+		"data": data
+	}
+	cifrar(j)
 	
 
 while True:
@@ -102,6 +112,11 @@ while True:
 
 	if option == 3:
 		show_queues()	
+		client.close()
+		break
+
+	if option == 4:
+		sendq()
 		client.close()
 		break
 

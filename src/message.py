@@ -1,6 +1,7 @@
 class message:
-    def __init__(self, namei,named, data):
-        self.namei = namei
-        self.named = named
+
+    def __init__(self, nameuser,namequeue, data):
+        self.user = nameuser
+        self.queue= namequeue
         self.data = data
         

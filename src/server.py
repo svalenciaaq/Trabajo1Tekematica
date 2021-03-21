@@ -5,7 +5,7 @@ from Queue import queue
 import threading
 import hashlib
 import json
-
+from message import message
 import time
 
 
@@ -75,8 +75,8 @@ def threaded_client(connection):
             create_queue(cmd["namequeu"],name)
             break
             
-        if(cmd == 'messageq'):
-            namequeu = connection.recv(2048).decode()
+       
+
 
 
         if(cmd["cmd"] == 'showq'):
@@ -86,6 +86,10 @@ def threaded_client(connection):
         if(cmd["cmd"] == 'delete'):
             delete_qeueu(cmd["namequeu"], name)
 
+        if(cmd["cmd"] =='sendq'):
+           sendq(name,cmd["namequeue"],cmd["data"])
+           break
+           
         if(cmd["cmd"] == 'close'):
             break    
 
@@ -103,8 +107,10 @@ def show_queue(x, con):
     j ={
         "data": ro
     }    
-    ju = json.dumps(j)     
-    con.send(str.encode(jus))             
+    ju = json.dumps(j)
+    enc = str.encode(ju)
+    encoded = base64.b64encode(enc)
+    con.send(encoded)             
 
 def delete_qeueu(x,y):
     for i in queu:
@@ -116,6 +122,18 @@ def delete_qeueu(x,y):
 def create_queue(x,y):
       q = queue(x, y)
       queu.append(q)
+
+
+def sendq(x,y,z):
+    msg = message(x,y,z)
+    for i in queu:
+        if i.queu == msg.queue:
+            i.push(msg.data)
+            print(i.messages)
+
+    
+    
+
 
 while True:
     Client, address = ServerSocket.accept()
