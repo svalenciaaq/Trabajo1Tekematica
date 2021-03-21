@@ -1,6 +1,6 @@
 import json
 import socket
-
+import base64
 
 
 # create an ipv4 (AF_INET) socket object using the tcp protocol (SOCK_STREAM)
@@ -31,9 +31,22 @@ print(response)
 
 
 print("hola")
+
+def cifrar(x):
+	ju = json.dumps(x)
+	enc = str.encode(ju)
+	encoded = base64.b64encode(enc)
+	client.send(encoded)
+
 def close_connection():
-	client.close()
+	
+	j = {
+		"cmd": "close"
+	}
+	cifrar(j)
+	
 	print("close connection")
+	client.close()
 
 def create_queue():	
 	namequeue = input()
@@ -41,14 +54,16 @@ def create_queue():
 		"cmd": "queue",
 		"namequeu": namequeue
 	}
-	ju = json.dumps(j)
-	client.send(str.encode(ju))
+	cifrar(j)
 
 def delete_queue():
 
 	namequeue = input()
-	msg = "deleteq" + " " + namequeue + " " + name
-	client.send(str.encode(msg))
+	j = {
+		"cmd": "delete",
+		"namequeu": namequeue
+	}
+	cifrar(j)
 
 def show_queues():
 	j = {
@@ -72,6 +87,7 @@ while True:
 	print("1. Create a queue \n")
 	print("2. delete a qeueu \n")
 	print("3. show queues \n")
+	print("7. Close connection \n")
 	
 	option = float(input("Ingrese la opcion \n"))
 
@@ -86,6 +102,8 @@ while True:
 
 	if option == 3:
 		show_queues()	
+		client.close()
+		break
 
 	if option == 7:
 		close_connection()

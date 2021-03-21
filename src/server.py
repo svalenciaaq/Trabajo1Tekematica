@@ -1,3 +1,4 @@
+import base64
 import socket
 import os
 from Queue import queue
@@ -64,9 +65,9 @@ def threaded_client(connection):
         # Commands Queue and Channels
         # Qeueu- Create a queue
         # MessageQ= Senda message to a queue
-        z = connection.recv(2048).decode()
-        
-        cmd = json.loads(z)
+        z = connection.recv(2048)
+        dec = base64.b64decode(z).decode()
+        cmd = json.loads(dec)
 
         print(cmd)
 
@@ -82,8 +83,13 @@ def threaded_client(connection):
           show_queue(name,connection)
           break       
 
-        if(cmd[0] == 'deleteq'):
-            delete_qeueu(cmd[1], name)
+        if(cmd["cmd"] == 'delete'):
+            delete_qeueu(cmd["namequeu"], name)
+
+        if(cmd["cmd"] == 'close'):
+            break    
+
+
     connection.close()
     print("the connection to client " + name +" has been closed.")        
 
