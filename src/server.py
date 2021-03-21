@@ -10,39 +10,23 @@ import time
 
 # Create Socket (TCP) Connection
 ServerSocket = socket.socket(family = socket.AF_INET, type = socket.SOCK_STREAM) 
-host = '192.168.1.104'
-port = 80
+host = '0.0.0.0'
+print(host)
+port = 1233
+
 ThreadCount = 0
+
+
 try:
     ServerSocket.bind((host, port))
 except socket.error as e:
     print(str(e))
 
 print('Waitiing for a Connection..')
-ServerSocket.listen(5)
+ServerSocket.listen(10)
 HashTable = {}
 queu= []
 qe = ""
-
-def delete_qeueu(x,y):
-    for i in queu:
-        if(i.user == y):
-            if(i.queu == x):
-                queu.remove(i)
-
-def show_queue():
-    u = connection.recv(2048).decode()
-    qe = ""
-    ro = ""
-    for i in queu:
-        if(i.user == u):
-            qe = i.queu
-            ro += qe.rstrip("\n") + " ".rstrip("\n") 
-    connection.send(str.encode(ro))             
-
-def create_queue(x,y):
-      q = queue(x, y)
-      queu.append(q)
 
 # Function : For each client 
 def threaded_client(connection):
@@ -94,16 +78,39 @@ def threaded_client(connection):
             namequeu = connection.recv(2048).decode()
 
 
-        if(cmd[0] == 'showq'):
-          show_queue()
+        if(cmd["cmd"] == 'showq'):
+          show_queue(name,connection)
           break       
 
         if(cmd[0] == 'deleteq'):
             delete_qeueu(cmd[1], name)
-    connection.close()        
+    connection.close()
+    print("the connection to client " + name +" has been closed.")        
+
+def show_queue(x, con):
+    qe = ""
+    ro = ""
+    for i in queu:
+        if(i.user == x):
+            qe = i.queu
+            ro += qe.rstrip("\n") + " ".rstrip("\n")
+    j ={
+        "data": ro
+    }    
+    ju = json.dumps(j)     
+    con.send(str.encode(jus))             
+
+def delete_qeueu(x,y):
+    for i in queu:
+        if(i.user == y):
+            if(i.queu == x):
+                queu.remove(i)
 
 
-        
+def create_queue(x,y):
+      q = queue(x, y)
+      queu.append(q)
+
 while True:
     Client, address = ServerSocket.accept()
     client_handler = threading.Thread(

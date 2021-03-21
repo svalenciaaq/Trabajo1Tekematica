@@ -9,7 +9,7 @@ queues=[]
 option = 0
 # connect the client
 # client.connect((target, port))
-client.connect(('192.168.1.104', 80))
+client.connect(('192.168.1.104', 1233))
 response = client.recv(2048)
 # Input UserName
 name = input(response.decode())	
@@ -51,19 +51,17 @@ def delete_queue():
 	client.send(str.encode(msg))
 
 def show_queues():
-	client.send(str.encode("showq"))
-	client.send(str.encode(name))
-	q = client.recv(2048).decode().rstrip("\n")
-	l = q.split(" ")
-	id= 0
+	j = {
+		"cmd": "showq"
+	}
+	ju = json.dumps(j)
+	client.send(str.encode(ju))
+	q = client.recv(2048).decode()
+	ju = json.loads(q)
+	print(type(ju["data"]))
 	print(" \n")
 	print("QUEUES \n")
-	for i in l:
-		if i != '':
-			queues.append(i)
-			print(str(id + 1 )+". " + i )
-			id+=1
-
+	
 
 
 	
