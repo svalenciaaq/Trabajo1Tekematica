@@ -131,6 +131,11 @@ def sendq(x,y,z):
             i.push(msg.data)
             print(i.messages)
 
+def pullq(x):
+    for i in queu:
+        if i.queue == x:
+            j = i.pop()            
+
     
     
 

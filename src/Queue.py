@@ -9,7 +9,7 @@ class queue:
         self.messages.append(x)
 
     def pop(self):
-        self.messages.pop(0)    
+        self.messages.pop()    
         
 
  
