@@ -11,7 +11,7 @@ import time
 
 # Create Socket (TCP) Connection
 ServerSocket = socket.socket(family = socket.AF_INET, type = socket.SOCK_STREAM) 
-host = '0.0.0.0'
+host = '127.0.0.1'
 print(host)
 port = 1233
 ThreadCount = 0
@@ -22,7 +22,7 @@ try:
 except socket.error as e:
     print(str(e))
 
-print('Waitiing for a Connection..')
+print('Waitiing for a Connection...')
 ServerSocket.listen(10)
 HashTable = {}
 queu= []
@@ -31,9 +31,9 @@ queuesubscriber = ""
 
 # Function : For each client 
 def threaded_client(connection):
-    connection.send(str.encode('ENTER USERNAME : ')) # Request Username
+    connection.send(str.encode('Username: ')) # Request Username
     name = connection.recv(2048)
-    connection.send(str.encode('ENTER PASSWORD : ')) # Request Password
+    connection.send(str.encode('Password: ')) # Request Password
     password = connection.recv(2048)
     password = password.decode()
     name = name.decode()
@@ -64,7 +64,7 @@ def threaded_client(connection):
             print('Connected : ',name)
         else:
             connection.send(str.encode('Login Failed')) # Response code for login failed
-            print('Connection denied : ',name)
+            print('Connection Denied : ',name)
 
     while True:
 
@@ -105,7 +105,7 @@ def threaded_client(connection):
             break    
 
     connection.close()
-    print("the connection to client " + name +" has been closed.")        
+    print("The connection to client " + name +" has been closed.")        
 
 def show_queue(x, con):
     qe = ""
@@ -146,7 +146,7 @@ def pullq(x,con):
     for i in queu:
         if i.queu == x:
             j = i.pop()
-            print(j)
+            print("Message: " + j)
 
     je = {
         "data": j

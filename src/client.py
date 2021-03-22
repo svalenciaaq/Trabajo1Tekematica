@@ -9,7 +9,7 @@ queues=[]
 option = 0
 # connect the client
 # client.connect((target, port))
-client.connect(('192.168.1.104', 1233))
+client.connect(('127.0.0.1', 1233))
 response = client.recv(2048)
 # Input UserName
 name = input(response.decode())	
@@ -29,9 +29,6 @@ response = response.decode()
 
 print(response)
 
-
-print("hola")
-
 def cifrar(x):
 	ju = json.dumps(x)
 	enc = str.encode(ju)
@@ -49,21 +46,24 @@ def close_connection():
 	client.close()
 
 def create_queue():	
-	namequeue = input()
+	
+	namequeue = input("Queue Name: ")
 	j = {
 		"cmd": "queue",
 		"namequeu": namequeue
 	}
 	cifrar(j)
+	print("Queue \"" + namequeue + "\" created succesfully!")
 
 def delete_queue():
 
-	namequeue = input()
+	namequeue = input("Queue Name to Delete: ")
 	j = {
 		"cmd": "delete",
 		"namequeu": namequeue
 	}
-	cifrar(j)
+	#cifrar(j)
+	print("Queue \"" + namequeue + "\" deleted succesfully!")
 
 def show_queues():
 	j = {
@@ -81,8 +81,8 @@ def show_queues():
 	print("QUEUES \n")
 	
 def sendq():
-	namequeue= input("Ingrese el nombre de la cola que quiere enviar el mensaje")
-	data = input("Ingrese el mensaje que quiere enviar")
+	namequeue= input("Queue Name: ")
+	data = input("Your Message: ")
 	j = {
 		"cmd": "sendq",
 		"user": name,
@@ -90,9 +90,10 @@ def sendq():
 		"data": data
 	}
 	cifrar(j)
+	print("Message Saved Succesfully!")
 	
 def pullq():
-	que=  input()
+	que=  input("Queue name you want your message from: ")
 	j = {
 		"cmd": "pullq",
 		"queue": que
@@ -102,10 +103,10 @@ def pullq():
 	q = client.recv(2048)
 	dec = base64.b64decode(q).decode()
 	cmd = json.loads(dec)
-	print(cmd["data"])
+	print("Message: " + cmd["data"])
 
 def queue_subscribe():
-	qu = input("enter the queue you want to subscribe to")
+	qu = input("Enter the queue you want to subscribe to")
 	j ={
 		"cmd":"queuesubscriber",
 		"queue": qu
@@ -117,46 +118,48 @@ def queue_subscribe():
 
 
 while True:
-	print("Choose an option \n")
-	print("QUEUE")
-	print("1. Create a queue \n")
-	print("2. delete a qeueu \n")
-	print("3. show queues \n")
+	print("\n")
+	print("Choose An Option ")
+	print("QUEUE OPTION")
+	print("1. Create a queue ")
+	print("2. Delete a qeueu ")
+	print("3. Show queues ")
 	print("4. Send message to a queue")
 	print("5. Pull message from a queue")
 	print("7. Close connection \n")
 	
-	option = float(input("Ingrese la opcion \n"))
+	option = float(input("Input your option \n"))
 
 	if option == 1:
 		create_queue()
 		client.close()
-		break
+		break	
 	
 	if option == 2:
 		delete_queue()
-
+		client.close()
+		break	
 
 	if option == 3:
 		show_queues()	
 		client.close()
-		break
+		break	
 
 		
 	if option == 4:
 		sendq()
 		client.close()
-		break
+		break	
 
 	if(option == 5):
 		pullq()
 		client.close()
-		break
+		break	
 
 	if(option == 6):
 		queue_subscribe()
 		client.close()
-		break
+		break	
 	if option == 7:
 		close_connection()
 		break	
