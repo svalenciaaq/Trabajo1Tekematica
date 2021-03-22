@@ -84,8 +84,11 @@ def showmy_queues():
 	q = client.recv(2048)
 	dec = base64.b64decode(q).decode()
 	cmd = json.loads(dec)
+	print("My Queues")
+	for i in cmd["data"]:
 
-	print(cmd["data"])
+		print(i)
+		
 def showall_queues():
 	j = {
 		"cmd": "showaq"
@@ -94,8 +97,12 @@ def showall_queues():
 	q = client.recv(2048)
 	dec = base64.b64decode(q).decode()
 	cmd = json.loads(dec)
+	print("All Queues")
+	
+	for i in cmd["data"]:
 
-	print(cmd["data"])
+		print(i)
+		
 	
 def sendq():
 	namequeue= input("Queue Name: ")

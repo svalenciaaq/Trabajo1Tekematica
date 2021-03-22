@@ -116,7 +116,7 @@ def showmy_queue(x, con):
         if(i.user == x):
          queuesname.append(i.queu)
     j ={
-        "data": json.dumps(queuesname)
+        "data": queuesname
     }    
     ju = json.dumps(j)
     enc = str.encode(ju)
@@ -124,10 +124,12 @@ def showmy_queue(x, con):
     con.send(encoded)    
 def showall_queue(x, con):
     queuesname = []
+    info = ""
     for i in queu:
-        queuesname.append(i.queu)
+        info = "Queue \"" + i.queu + "\" created by \"" + i.user + "\""
+        queuesname.append(info)
     j ={
-        "data": json.dumps(queuesname)
+        "data": queuesname
     }    
     ju = json.dumps(j)
     enc = str.encode(ju)
@@ -186,14 +188,16 @@ def create_queue(x,y,con):
 def sendq(x,y,z,con):
     j = ""
     msg = message(x,y,z)
+    
+    j = "There is no Queue named \"" + msg.queue + "\"!"
     for i in queu:
         if i.queu == msg.queue:
             i.push(msg.data)
             print(i.messages)
             j = "Message saved sucessfully!"
             break
-        else:
-            j = "There is no Queue named \"" + msg.queue + "\"!"
+        
+            
     je = {
         "data": j
     }   
@@ -206,6 +210,7 @@ def pullq(x,con):
     j=""
     mess = ""
     queueExist = False
+    j = "There is no Queue named \"" + x + "\""
     for i in queu:
         if i.queu == x:
             mess = i.pop()
@@ -216,8 +221,6 @@ def pullq(x,con):
                 j =  "Message: " + mess
                 print(j)
             break
-        else:
-            j = "There is no Queue named \"" + x + "\""
     je = {
         "data": j
     }   
