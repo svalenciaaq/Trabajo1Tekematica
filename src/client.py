@@ -57,9 +57,9 @@ def create_queue():
 	dec = base64.b64decode(q).decode()
 	cmd = json.loads(dec)
 	if(cmd["data"] == ""):
-		print("No messages found in queue \"" + que + "!\"")
+		print("No messages found in queue \"" + namequeue + "\"!")
 	else:
-		print("Message: " + cmd["data"])
+		print(cmd["data"])
 	
 	
 
@@ -74,7 +74,6 @@ def delete_queue():
 	q = client.recv(2048)
 	dec = base64.b64decode(q).decode()
 	cmd = json.loads(dec)
-
 	print(cmd["data"])
 
 def showmy_queues():
@@ -108,7 +107,10 @@ def sendq():
 		"data": data
 	}
 	cifrar(j)
-	print("Message Saved Succesfully!")
+	q = client.recv(2048)
+	dec = base64.b64decode(q).decode()
+	cmd = json.loads(dec)
+	print(cmd["data"])
 	
 def pullq():
 	que=  input("Queue name you want your message from: ")
@@ -121,10 +123,7 @@ def pullq():
 	q = client.recv(2048)
 	dec = base64.b64decode(q).decode()
 	cmd = json.loads(dec)
-	if(cmd["data"] == ""):
-		print("No messages found in queue \"" + que + "!\"")
-	else:
-		print("Message: " + cmd["data"])
+	print(cmd["data"])
 
 def queue_subscribe():
 	qu = input("Enter the queue you want to subscribe to")

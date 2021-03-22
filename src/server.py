@@ -95,9 +95,9 @@ def threaded_client(connection):
           
         if(cmd["cmd"] == 'delete'):
             delete_qeueu(cmd["namequeu"], name, connection)
-
+            break
         if(cmd["cmd"] =='sendq'):
-           sendq(name,cmd["namequeue"],cmd["data"])
+           sendq(name,cmd["namequeue"],cmd["data"], connection)
            break
            
         if(cmd["cmd"] == 'close'):
@@ -136,15 +136,21 @@ def showall_queue(x, con):
 
 def delete_qeueu(x,y,con):
     j = ""
+    correctUser = False
+    queueExist = False
     for i in queu:
         if(i.queu == x):
+            queueExist = True
             if(i.user == y):
-                j = "Queue \"" + i.queu + "\" deleted successfully!"
+                correctUser = True
                 queu.remove(i)
-            else:
-                   j = "You can't deleted this queue because you did not created it" 
-        else:
-            j = "There is no queue named \"" + x + "\"!. Press 1 to create one"
+            break    
+    if(correctUser):
+        j = "Queue \"" + x + "\" deleted successfully!"
+    if(not correctUser and queueExist):
+        j = "You can't deleted this queue because you did not created it" 
+    if(not correctUser and not queueExist):
+        j = "There is no queue named \"" + x + "\". Press 1 to create one"
     je = {
         "data": j
     }   
@@ -177,22 +183,41 @@ def create_queue(x,y,con):
     con.send(encoded)          
 
 
-def sendq(x,y,z):
+def sendq(x,y,z,con):
+    j = ""
     msg = message(x,y,z)
     for i in queu:
         if i.queu == msg.queue:
             i.push(msg.data)
             print(i.messages)
+            j = "Message saved sucessfully!"
+            break
+        else:
+            j = "There is no Queue named \"" + msg.queue + "\"!"
+    je = {
+        "data": j
+    }   
+    ju = json.dumps(je)
+    enc = str.encode(ju)
+    encoded = base64.b64encode(enc)
+    con.send(encoded) 
 
 def pullq(x,con):
     j=""
+    mess = ""
+    queueExist = False
     for i in queu:
         if i.queu == x:
-            j = i.pop()
-            if(j == ""):
+            mess = i.pop()
+            if(mess == ""):
+                j = "No messages found in Queue \"" + x + "\"" 
                 print("no messages found!")
             else:
-                print("Messages: " + j)
+                j =  "Message: " + mess
+                print(j)
+            break
+        else:
+            j = "There is no Queue named \"" + x + "\""
     je = {
         "data": j
     }   
