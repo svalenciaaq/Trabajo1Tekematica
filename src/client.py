@@ -26,8 +26,9 @@ client.send(str.encode(password))
 # Receive response 
 response = client.recv(2048)
 response = response.decode()
-
 print(response)
+
+
 
 def cifrar(x):
 	ju = json.dumps(x)
@@ -144,7 +145,7 @@ def queue_subscribe():
 	client.send(encoded)
 
 
-while True:
+while (response != "Login Failed"):
 	print("\n")
 	print("Choose An Option ")
 	print("QUEUE OPTION")
