@@ -53,7 +53,15 @@ def create_queue():
 		"namequeu": namequeue
 	}
 	cifrar(j)
-	print("Queue \"" + namequeue + "\" created succesfully!")
+	q = client.recv(2048)
+	dec = base64.b64decode(q).decode()
+	cmd = json.loads(dec)
+	if(cmd["data"] == ""):
+		print("No messages found in queue \"" + que + "!\"")
+	else:
+		print("Message: " + cmd["data"])
+	
+	
 
 def delete_queue():
 
@@ -62,23 +70,29 @@ def delete_queue():
 		"cmd": "delete",
 		"namequeu": namequeue
 	}
-	#cifrar(j)
+	cifrar(j)
 	print("Queue \"" + namequeue + "\" deleted succesfully!")
 
-def show_queues():
+def showmy_queues():
 	j = {
 		"cmd": "showq"
 	}
-	ju = json.dumps(j)
-	enc = str.encode(ju)
-	encoded = base64.b64encode(enc)
-	client.send(encoded)
+	cifrar(j)
 	q = client.recv(2048)
 	dec = base64.b64decode(q).decode()
-	ju = json.loads(dec)
-	print(type(ju["data"]))
-	print(" \n")
-	print("QUEUES \n")
+	cmd = json.loads(dec)
+
+	print(cmd["data"])
+def showall_queues():
+	j = {
+		"cmd": "showq"
+	}
+	cifrar(j)
+	q = client.recv(2048)
+	dec = base64.b64decode(q).decode()
+	cmd = json.loads(dec)
+
+	print(cmd["data"])
 	
 def sendq():
 	namequeue= input("Queue Name: ")
@@ -103,7 +117,10 @@ def pullq():
 	q = client.recv(2048)
 	dec = base64.b64decode(q).decode()
 	cmd = json.loads(dec)
-	print("Message: " + cmd["data"])
+	if(cmd["data"] == ""):
+		print("No messages found in queue \"" + que + "!\"")
+	else:
+		print("Message: " + cmd["data"])
 
 def queue_subscribe():
 	qu = input("Enter the queue you want to subscribe to")
@@ -123,10 +140,11 @@ while True:
 	print("QUEUE OPTION")
 	print("1. Create a queue ")
 	print("2. Delete a qeueu ")
-	print("3. Show queues ")
+	print("3. Show my queues ")
 	print("4. Send message to a queue")
 	print("5. Pull message from a queue")
 	print("7. Close connection \n")
+	print("8. Show all queues")
 	
 	option = float(input("Input your option \n"))
 
@@ -137,11 +155,10 @@ while True:
 	
 	if option == 2:
 		delete_queue()
-		client.close()
-		break	
+		
 
 	if option == 3:
-		show_queues()	
+		showmy_queues()	
 		client.close()
 		break	
 
@@ -163,5 +180,9 @@ while True:
 	if option == 7:
 		close_connection()
 		break	
+	if option == 8:
+		showall_queues()
+		client.close
+		break
 
 

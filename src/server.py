@@ -83,7 +83,7 @@ def threaded_client(connection):
             
 
         if(cmd["cmd"] == 'queue'):
-            create_queue(cmd["namequeu"],name)
+            create_queue(cmd["namequeu"],name,connection)
             break
 
         if(cmd["cmd"] == 'showq'):
@@ -91,7 +91,7 @@ def threaded_client(connection):
           break       
 
         if(cmd["cmd"] == 'delete'):
-            delete_qeueu(cmd["namequeu"], name)
+            delete_qeueu(cmd["namequeu"], name, connection)
 
         if(cmd["cmd"] =='sendq'):
            sendq(name,cmd["namequeue"],cmd["data"])
@@ -108,30 +108,53 @@ def threaded_client(connection):
     print("The connection to client " + name +" has been closed.")        
 
 def show_queue(x, con):
-    qe = ""
-    ro = ""
+    queuesname = []
     for i in queu:
-        if(i.user == x):
-            qe = i.queu
-            ro += qe.rstrip("\n") + " ".rstrip("\n")
+        queuesname.append(i.queu)
     j ={
-        "data": ro
+        "data": json.dumps(queuesname)
     }    
     ju = json.dumps(j)
     enc = str.encode(ju)
     encoded = base64.b64encode(enc)
     con.send(encoded)             
 
-def delete_qeueu(x,y):
+def delete_qeueu(x,y,con):
+    j = ""
     for i in queu:
         if(i.user == y):
             if(i.queu == x):
                 queu.remove(i)
+    je = {
+        "data": j
+    }   
+    ju = json.dumps(je)
+    enc = str.encode(ju)
+    encoded = base64.b64encode(enc)
+    con.send(encoded)         
 
 
-def create_queue(x,y):
-      q = queue(x, y)
-      queu.append(q)
+def create_queue(x,y,con):
+    q = queue(x, y)
+    j = ""
+    alreadyCreated = False
+    for i in queu:
+          if(i.queu == x):
+            alreadyCreated = True
+            break 
+    if(alreadyCreated):
+        j = "Queue named \"" + x +"\" is already created"
+        print("Queue named \"" + x +"\" is already created") 
+    else:
+        j = "Queue named \"" + x +"\" created successfully!"
+        queu.append(q)
+    je = {
+        "data": j
+    }   
+    ju = json.dumps(je)
+    enc = str.encode(ju)
+    encoded = base64.b64encode(enc)
+    con.send(encoded)          
 
 
 def sendq(x,y,z):
@@ -146,8 +169,10 @@ def pullq(x,con):
     for i in queu:
         if i.queu == x:
             j = i.pop()
-            print("Message: " + j)
-
+            if(j == ""):
+                print("no messages found!")
+            else:
+                print("Messages: " + j)
     je = {
         "data": j
     }   
