@@ -14,7 +14,6 @@ ServerSocket = socket.socket(family = socket.AF_INET, type = socket.SOCK_STREAM)
 host = '0.0.0.0'
 print(host)
 port = 1233
-
 ThreadCount = 0
 
 
@@ -28,6 +27,7 @@ ServerSocket.listen(10)
 HashTable = {}
 queu= []
 qe = ""
+queuesubscriber = ""
 
 # Function : For each client 
 def threaded_client(connection):
@@ -50,6 +50,12 @@ def threaded_client(connection):
             label, num = k,v
             print("{:<8} {:<20}".format(label, num))
         print("-------------------------------------------")
+
+        f = open ('holamundo.txt','a')
+        mensaje = "\n"+ name +" "+password 
+        f.write(mensaje)
+        print(mensaje)
+        f.close()
         
     else:
 # If already existing user, check if the entered password is correct
@@ -67,17 +73,18 @@ def threaded_client(connection):
         # MessageQ= Senda message to a queue
         z = connection.recv(2048)
         dec = base64.b64decode(z).decode()
+        print(type(dec))
         cmd = json.loads(dec)
-
         print(cmd)
+        if(cmd["cmd"] == 'queuesubscriber'):
+            queuesubscriber = cmd["queue"]
+            print("entre")
+            break
+            
 
         if(cmd["cmd"] == 'queue'):
             create_queue(cmd["namequeu"],name)
             break
-            
-       
-
-
 
         if(cmd["cmd"] == 'showq'):
           show_queue(name,connection)
@@ -93,6 +100,9 @@ def threaded_client(connection):
         if(cmd["cmd"] == 'close'):
             break    
 
+        if(cmd["cmd"]  == 'pullq'):
+            pullq(cmd["queue"],connection)
+            break    
 
     connection.close()
     print("the connection to client " + name +" has been closed.")        
@@ -131,10 +141,20 @@ def sendq(x,y,z):
             i.push(msg.data)
             print(i.messages)
 
-def pullq(x):
+def pullq(x,con):
+    j=""
     for i in queu:
-        if i.queue == x:
-            j = i.pop()            
+        if i.queu == x:
+            j = i.pop()
+            print(j)
+
+    je = {
+        "data": j
+    }   
+    ju = json.dumps(je)
+    enc = str.encode(ju)
+    encoded = base64.b64encode(enc)
+    con.send(encoded)                
 
     
     

@@ -73,8 +73,9 @@ def show_queues():
 	enc = str.encode(ju)
 	encoded = base64.b64encode(enc)
 	client.send(encoded)
-	q = client.recv(2048).decode()
-	ju = json.loads(q)
+	q = client.recv(2048)
+	dec = base64.b64decode(q).decode()
+	ju = json.loads(dec)
 	print(type(ju["data"]))
 	print(" \n")
 	print("QUEUES \n")
@@ -90,6 +91,30 @@ def sendq():
 	}
 	cifrar(j)
 	
+def pullq():
+	que=  input()
+	j = {
+		"cmd": "pullq",
+		"queue": que
+
+	}
+	cifrar(j)
+	q = client.recv(2048)
+	dec = base64.b64decode(q).decode()
+	cmd = json.loads(dec)
+	print(cmd["data"])
+
+def queue_subscribe():
+	qu = input("enter the queue you want to subscribe to")
+	j ={
+		"cmd":"queuesubscriber",
+		"queue": qu
+	}
+	ju = json.dumps(j)
+	enc = ju.encode()
+	encoded= base64.b64encode(enc)
+	client.send(encoded)
+
 
 while True:
 	print("Choose an option \n")
@@ -97,6 +122,8 @@ while True:
 	print("1. Create a queue \n")
 	print("2. delete a qeueu \n")
 	print("3. show queues \n")
+	print("4. Send message to a queue")
+	print("5. Pull message from a queue")
 	print("7. Close connection \n")
 	
 	option = float(input("Ingrese la opcion \n"))
@@ -115,11 +142,21 @@ while True:
 		client.close()
 		break
 
+		
 	if option == 4:
 		sendq()
 		client.close()
 		break
 
+	if(option == 5):
+		pullq()
+		client.close()
+		break
+
+	if(option == 6):
+		queue_subscribe()
+		client.close()
+		break
 	if option == 7:
 		close_connection()
 		break	
