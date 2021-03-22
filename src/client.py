@@ -71,11 +71,15 @@ def delete_queue():
 		"namequeu": namequeue
 	}
 	cifrar(j)
-	print("Queue \"" + namequeue + "\" deleted succesfully!")
+	q = client.recv(2048)
+	dec = base64.b64decode(q).decode()
+	cmd = json.loads(dec)
+
+	print(cmd["data"])
 
 def showmy_queues():
 	j = {
-		"cmd": "showq"
+		"cmd": "showmq"
 	}
 	cifrar(j)
 	q = client.recv(2048)
@@ -85,7 +89,7 @@ def showmy_queues():
 	print(cmd["data"])
 def showall_queues():
 	j = {
-		"cmd": "showq"
+		"cmd": "showaq"
 	}
 	cifrar(j)
 	q = client.recv(2048)
@@ -155,6 +159,8 @@ while True:
 	
 	if option == 2:
 		delete_queue()
+		client.close()
+		break
 		
 
 	if option == 3:

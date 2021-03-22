@@ -86,10 +86,13 @@ def threaded_client(connection):
             create_queue(cmd["namequeu"],name,connection)
             break
 
-        if(cmd["cmd"] == 'showq'):
-          show_queue(name,connection)
-          break       
-
+        if(cmd["cmd"] == 'showaq'):
+          showall_queue(name,connection)
+          break     
+        if(cmd["cmd"] == 'showmq'):
+          showmy_queue(name,connection)
+          break    
+          
         if(cmd["cmd"] == 'delete'):
             delete_qeueu(cmd["namequeu"], name, connection)
 
@@ -107,7 +110,19 @@ def threaded_client(connection):
     connection.close()
     print("The connection to client " + name +" has been closed.")        
 
-def show_queue(x, con):
+def showmy_queue(x, con):
+    queuesname = []
+    for i in queu:
+        if(i.user == x):
+         queuesname.append(i.queu)
+    j ={
+        "data": json.dumps(queuesname)
+    }    
+    ju = json.dumps(j)
+    enc = str.encode(ju)
+    encoded = base64.b64encode(enc)
+    con.send(encoded)    
+def showall_queue(x, con):
     queuesname = []
     for i in queu:
         queuesname.append(i.queu)
@@ -117,14 +132,19 @@ def show_queue(x, con):
     ju = json.dumps(j)
     enc = str.encode(ju)
     encoded = base64.b64encode(enc)
-    con.send(encoded)             
+    con.send(encoded)               
 
 def delete_qeueu(x,y,con):
     j = ""
     for i in queu:
-        if(i.user == y):
-            if(i.queu == x):
+        if(i.queu == x):
+            if(i.user == y):
+                j = "Queue \"" + i.queu + "\" deleted successfully!"
                 queu.remove(i)
+            else:
+                   j = "You can't deleted this queue because you did not created it" 
+        else:
+            j = "There is no queue named \"" + x + "\"!. Press 1 to create one"
     je = {
         "data": j
     }   
