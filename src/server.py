@@ -15,6 +15,7 @@ host = '127.0.0.1'
 print(host)
 port = 1233
 ThreadCount = 0
+login = ""
 
 
 try:
@@ -43,7 +44,8 @@ def threaded_client(connection):
 # If new user,  regiter in Hashtable Dictionary  
     if name not in HashTable:
         HashTable[name]=password
-        connection.send(str.encode('Registeration Successful')) 
+        login = "Registeration Successful"
+        connection.send(str.encode(login)) 
         print('Registered : ',name)
         print("{:<8} {:<20}".format('USER','PASSWORD'))
         for k, v in HashTable.items():
@@ -60,17 +62,20 @@ def threaded_client(connection):
     else:
 # If already existing user, check if the entered password is correct
         if(HashTable[name] == password):
-            connection.send(str.encode('Connection Successful')) # Response Code for Connected Client 
+            login = "'Connection Successful"
+            connection.send(str.encode(login)) # Response Code for Connected Client 
             print('Connected : ',name)
         else:
-            connection.send(str.encode('Login Failed')) # Response code for login failed
+            login = "Login Failed"
+            connection.send(str.encode(login)) # Response code for login failed
             print('Connection Denied : ',name)
 
-    while True:
+    while (login != "Login Failed"):
 
         # Commands Queue and Channels
         # Qeueu- Create a queue
         # MessageQ= Senda message to a queue
+        
         z = connection.recv(2048)
         dec = base64.b64decode(z).decode()
         print(type(dec))
