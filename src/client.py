@@ -62,8 +62,6 @@ def create_queue():
 	else:
 		print(cmd["data"])
 	
-	
-
 def delete_queue():
 
 	namequeue = input("Queue Name to Delete: ")
@@ -103,8 +101,7 @@ def showall_queues():
 	for i in cmd["data"]:
 
 		print(i)
-		
-	
+			
 def sendq():
 	namequeue= input("Queue Name: ")
 	data = input("Your Message: ")
@@ -134,7 +131,7 @@ def pullq():
 	print(cmd["data"])
 
 def queue_subscribe():
-	qu = input("Enter the queue you want to subscribe to")
+	qu = input("Enter the queue you want to subscribe to: ")
 	j ={
 		"cmd":"queuesubscriber",
 		"queue": qu
@@ -144,9 +141,8 @@ def queue_subscribe():
 	encoded= base64.b64encode(enc)
 	client.send(encoded)
 
-
 def create_channel():
-	namechannel= input("Ingrese el nombre de la cola que quiere enviar el mensaje")
+	namechannel= input("Input Channel's name: ")
 	j = {
 		"cmd": "channel",
 		"user": name,
@@ -210,7 +206,6 @@ def subscribe_channel():
 	client.send(encoded)
 
 
-
 while (response != "Login Failed"):
 	print("\n")
 	print("Choose An Option ")
@@ -218,10 +213,16 @@ while (response != "Login Failed"):
 	print("1. Create a queue ")
 	print("2. Delete a qeueu ")
 	print("3. Show my queues ")
-	print("4. Send message to a queue")
-	print("5. Pull message from a queue")
-	print("7. Close connection \n")
-	print("8. Show all queues")
+	print("4. Show all queues")
+	print("5. Send message to a queue")
+	print("6. Pull message from a queue")
+	print("7. Subscribe a queue")
+	print("8. Create a chanel ")
+	print("9. Delete a chanel")
+	print("10. Show my chanels")
+	print("11. Send message to a chanel")
+	print("12. Subscribe a chanel")
+	print("13. Close Connection")
 	
 	option = float(input("Input your option \n"))
 
@@ -239,53 +240,53 @@ while (response != "Login Failed"):
 	if option == 3:
 		showmy_queues()	
 		client.close()
+		break
+
+	if option == 4:
+		showall_queues()
+		client.close()
 		break	
 
-		
-	if option == 4:
+	if option == 5:
 		sendq()
 		client.close()
 		break	
 
-	if(option == 5):
+	if(option == 6):
 		pullq()
 		client.close()
 		break	
 
-	if(option == 6):
+	if(option == 7):
 		queue_subscribe()
 		client.close()
 		break	
-	if option == 7:
-		close_connection()
-		break	
-	if option == 8:
-		showall_queues()
-		client.close
-		break
 	
-	if(option == 9):
+	
+	if(option == 8):
 		create_channel()
 		client.close()
 		break
 	
-	if(option == 10):
+	if(option == 9):
 		delete_channel()
 		client.close()
 		break
 
-	if(option == 11 ):
+	if(option == 10 ):
 		showmy_channel()
 		client.close()
 		break
 	
-
-	if(option == 12):
+	if(option == 11):
 		sendc()
 		client.close()
 		break
 
-	if(option == 13):
+	if(option == 12):
 		subscribe_channel()
 		client.close()
 		break
+	if option == 13:
+		close_connection()
+		break	

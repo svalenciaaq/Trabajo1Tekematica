@@ -83,12 +83,11 @@ def threaded_client(connection):
         print(type(dec))
         cmd = json.loads(dec)
         print(cmd)
+
         if(cmd["cmd"] == 'queuesubscriber'):
             queuesubscriber = cmd["queue"]
-            print("entre")
             break
-            
-
+        
         if(cmd["cmd"] == 'queue'):
             create_queue(cmd["namequeu"],name,connection)
             break
@@ -139,7 +138,6 @@ def threaded_client(connection):
     print("The connection to client " + name +" has been closed.")        
 
 
-
 def showmy_queue(x, con):
     queuesname = []
     for i in queu:
@@ -152,8 +150,6 @@ def showmy_queue(x, con):
     enc = str.encode(ju)
     encoded = base64.b64encode(enc)
     con.send(encoded)
-
-
 
 def showall_queue(x, con):
     queuesname = []
@@ -168,9 +164,6 @@ def showall_queue(x, con):
     enc = str.encode(ju)
     encoded = base64.b64encode(enc)
     con.send(encoded)               
-
-
-
 
 def delete_qeueu(x,y,con):
     j = ""
@@ -197,9 +190,6 @@ def delete_qeueu(x,y,con):
     encoded = base64.b64encode(enc)
     con.send(encoded)         
 
-
-
-
 def create_queue(x,y,con):
     q = queue(x, y)
     j = ""
@@ -221,7 +211,6 @@ def create_queue(x,y,con):
     enc = str.encode(ju)
     encoded = base64.b64encode(enc)
     con.send(encoded)          
-
 
 def sendq(x,y,z,con):
     j = ""
@@ -267,40 +256,28 @@ def pullq(x,con):
     encoded = base64.b64encode(enc)
     con.send(encoded)                
 
-
 def create_channel(x,y,con):
-    if len(chann) == 0:
-        c = channel(x,y)
-        chann.append(c)
-        print(chann)
-        j={
-            "data": "channel create"
-        }
-        ju =  json.dumps(j)
-        enc = str.encode(ju)
-        encoded = base64.b64encode(enc)
-        con.send(encoded)     
+    c = channel(x, y)
+    j = ""
+    alreadyCreated = False
+    for i in chann:
+          if(i.channe == x):
+            alreadyCreated = True
+            break 
+    if(alreadyCreated):
+        j = "Channel named \"" + x +"\" is already created"
+        print("Channel named \"" + x +"\" is already created") 
     else:
-        for i in chann:
-            if i.channe != x:
-                c = channel(x,y)
-                j={
-                    "data": "Channel create"
-                }
-                ju =  json.dumps(j)
-                enc = str.encode(ju)
-                encoded = base64.b64encode(enc)
-                con.send(encoded)     
-            else:
-                j={
-                    "data": "the channel you are trying to create already exists"
-                }
-                ju =  json.dumps(j)
-                enc = str.encode(ju)
-                encoded = base64.b64encode(enc)
-                con.send(encoded)     
-
-
+        j = "Channel named \"" + x +"\" created successfully!"
+        chann.append(c)
+    je = {
+        "data": j
+    }   
+    ju = json.dumps(je)
+    enc = str.encode(ju)
+    encoded = base64.b64encode(enc)
+    con.send(encoded)     
+     
 
 def delete_channel(x,y,con):
     if len(chann) != 0:
@@ -324,7 +301,6 @@ def delete_channel(x,y,con):
         enc = str.encode(ju)
         encoded = base64.b64encode(enc)
         con.send(encoded)                      
-
 
 def show_channel(x,con):
     qe = ""
@@ -362,7 +338,6 @@ def showall_channels(x, con):
     encoded = base64.b64encode(enc)
     con.send(encoded)        
 
-
 def subscribe_channel(x,y,con):
     if len(chann) != 0:
         for i in chann:
@@ -385,13 +360,10 @@ def subscribe_channel(x,y,con):
         encoded = base64.b64encode(enc)
         con.send(encoded)    
 
-
 def create_queuec(x,y):
     q = queue(x, y)
     subscribers.append(q)
     print(subscribers)
-
-
 
 def sendc(x,y,z,con):
     j = ""
