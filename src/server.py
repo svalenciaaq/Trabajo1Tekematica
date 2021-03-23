@@ -28,6 +28,7 @@ ServerSocket.listen(10)
 HashTable = {}
 queu= []
 chann= []
+subscribers = []
 qe = ""
 queuesubscriber = ""
 
@@ -125,8 +126,19 @@ def threaded_client(connection):
         if(cmd["cmd"] == 'showmc'):
             show_channel(name,connection)  
             break  
+
+        if(cmd["cmd"] ==  "subscribec"):
+            subscribe_channel(cmd["namequeue"],name,connection)
+            break
+
+        if(cmd["cmd"] == 'sendc'):
+            sendc(name,cmd["namequeue"],cmd["data"],connection)
+            break
+
     connection.close()
     print("The connection to client " + name +" has been closed.")        
+
+
 
 def showmy_queue(x, con):
     queuesname = []
@@ -139,7 +151,10 @@ def showmy_queue(x, con):
     ju = json.dumps(j)
     enc = str.encode(ju)
     encoded = base64.b64encode(enc)
-    con.send(encoded)    
+    con.send(encoded)
+
+
+
 def showall_queue(x, con):
     queuesname = []
     info = ""
@@ -153,6 +168,9 @@ def showall_queue(x, con):
     enc = str.encode(ju)
     encoded = base64.b64encode(enc)
     con.send(encoded)               
+
+
+
 
 def delete_qeueu(x,y,con):
     j = ""
@@ -178,6 +196,8 @@ def delete_qeueu(x,y,con):
     enc = str.encode(ju)
     encoded = base64.b64encode(enc)
     con.send(encoded)         
+
+
 
 
 def create_queue(x,y,con):
@@ -280,6 +300,8 @@ def create_channel(x,y,con):
                 encoded = base64.b64encode(enc)
                 con.send(encoded)     
 
+
+
 def delete_channel(x,y,con):
     if len(chann) != 0:
         for i in chann:
@@ -326,7 +348,73 @@ def show_channel(x,con):
 
     con.send(encoded)
     
+def showall_channels(x, con):
+    channelnames = []
+    info = ""
+    for i in chann:
+        info = "Queue \"" + i.channe + "\" created by \"" + i.user + "\""
+        channelnames.append(info)
+    j ={
+        "data": channelnames
+    }    
+    ju = json.dumps(j)
+    enc = str.encode(ju)
+    encoded = base64.b64encode(enc)
+    con.send(encoded)        
+
+
+def subscribe_channel(x,y,con):
+    if len(chann) != 0:
+        for i in chann:
+            if i.channe == x:
+                i.pushs(y)
+                create_queuec(x,y)
+                j ={
+                "data": "Successfully subscribed"
+                }    
+                ju = json.dumps(j)
+                enc = str.encode(ju)
+                encoded = base64.b64encode(enc)
+                con.send(encoded)
+    else:
+        j ={
+        "data": "There are no channels to subscribe to"
+        }    
+        ju = json.dumps(j)
+        enc = str.encode(ju)
+        encoded = base64.b64encode(enc)
+        con.send(encoded)    
+
+
+def create_queuec(x,y):
+    q = queue(x, y)
+    subscribers.append(q)
+    print(subscribers)
+
+
+
+def sendc(x,y,z,con):
+    j = ""
+    msg = message(x,y,z)
     
+    j = "There is no Queue named \"" + msg.queue + "\"!"
+    for i in chann:
+        if i.channe == msg.queue:
+            i.push(msg.data)
+            j = "Message saved sucessfully!"
+            for n in subscribers:
+                if n.queu == i.channe:
+                        n.push(msg.data)
+                        print(n.messages)
+                        print("hasta aqui entre")
+            break         
+    je = {
+        "data": j
+    }   
+    ju = json.dumps(je)
+    enc = str.encode(ju)
+    encoded = base64.b64encode(enc)
+    con.send(encoded) 
 
 
 while True:

@@ -183,6 +183,33 @@ def showmy_channel():
 
 		print(i)
 
+def sendc():
+	namechannel= input("Queue Name: ")
+	data = input("Your Message: ")
+	j = {
+		"cmd": "sendc",
+		"user": name,
+		"namequeue": namechannel,
+		"data": data
+	}
+	cifrar(j)
+	q = client.recv(2048)
+	dec = base64.b64decode(q).decode()
+	cmd = json.loads(dec)
+	print(cmd["data"])
+
+def subscribe_channel():
+	cu = input("Enter the queue you want to subscribe to")
+	j ={
+		"cmd":"subscribec",
+		"namequeue": cu
+	}
+	ju = json.dumps(j)
+	enc = ju.encode()
+	encoded= base64.b64encode(enc)
+	client.send(encoded)
+
+
 
 while (response != "Login Failed"):
 	print("\n")
@@ -251,4 +278,14 @@ while (response != "Login Failed"):
 		showmy_channel()
 		client.close()
 		break
+	
 
+	if(option == 12):
+		sendc()
+		client.close()
+		break
+
+	if(option == 13):
+		subscribe_channel()
+		client.close()
+		break
