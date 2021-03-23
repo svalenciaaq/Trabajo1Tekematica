@@ -125,6 +125,9 @@ def threaded_client(connection):
         if(cmd["cmd"] == 'showmc'):
             show_channel(name,connection)  
             break  
+        if(cmd["cmd"] == 'showac'):
+            showall_channels(name,connection)  
+            break  
 
         if(cmd["cmd"] ==  "subscribec"):
             subscribe_channel(cmd["namequeue"],name,connection)
@@ -280,55 +283,50 @@ def create_channel(x,y,con):
      
 
 def delete_channel(x,y,con):
-    if len(chann) != 0:
-        for i in chann:
+    j = ""
+    correctUser = False
+    channExist = False
+    for i in chann:
+        if(i.channe == x):
+            channExist = True
             if(i.user == y):
-                if(i.channe == x):
-                    chann.remove(i)
-                    j={
-                    "data": "Delete successfully"
-                    }
-                    ju =  json.dumps(j)
-                    enc = str.encode(ju)
-                    encoded = base64.b64encode(enc)
-                    con.send(encoded)                      
-
-    else:
-        j={
-            "data": "There are no channels for deleting"
-        }
-        ju =  json.dumps(j)
-        enc = str.encode(ju)
-        encoded = base64.b64encode(enc)
-        con.send(encoded)                      
+                correctUser = True
+                chann.remove(i)
+            break    
+    if(correctUser):
+        j = "Channel \"" + x + "\" deleted successfully!"
+    if(not correctUser and channExist):
+        j = "You can't deleted this channel because you did not created it" 
+    if(not correctUser and not channExist):
+        j = "There is no channel named \"" + x + "\"."
+    je = {
+        "data": j
+    }   
+    ju = json.dumps(je)
+    enc = str.encode(ju)
+    encoded = base64.b64encode(enc)
+    con.send(encoded)                       
 
 def show_channel(x,con):
-    qe = ""
-    ro = ""
-    if len(chann) != 0:
-        for i in chann:
-            if(i.user == x):
-                qe = i.channe
-                ro += qe.rstrip("\n") + " ".rstrip("\n")
-    
-    else:
-        ro = "There are no channels to show"  
-
+    channelsname = []
+    for i in chann:
+        if(i.user == x):
+         channelsname.append(i.channe)
+         break
     j ={
-         "data": ro
-    }        
-    print(j)  
+        "data": channelsname
+    }    
     ju = json.dumps(j)
     enc = str.encode(ju)
     encoded = base64.b64encode(enc)
-
     con.send(encoded)
+    
     
 def showall_channels(x, con):
     channelnames = []
     info = ""
     for i in chann:
-        info = "Queue \"" + i.channe + "\" created by \"" + i.user + "\""
+        info = "Channel \"" + i.channe + "\" created by \"" + i.user + "\""
         channelnames.append(info)
     j ={
         "data": channelnames

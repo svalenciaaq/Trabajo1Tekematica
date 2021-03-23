@@ -84,11 +84,15 @@ def showmy_queues():
 	dec = base64.b64decode(q).decode()
 	cmd = json.loads(dec)
 	print("My Queues")
-	for i in cmd["data"]:
+	if not cmd["data"]:
+		print("There are no queues to show!")
+	else:
+		for i in cmd["data"]:
 
-		print(i)
+			print(i)
 		
 def showall_queues():
+	
 	j = {
 		"cmd": "showaq"
 	}
@@ -98,10 +102,31 @@ def showall_queues():
 	cmd = json.loads(dec)
 	print("All Queues")
 	
-	for i in cmd["data"]:
+	if not cmd["data"]:
+		print("There are no queues to show!")
+	else:
+		for i in cmd["data"]:
 
-		print(i)
+			print(i)
 			
+def showall_channels():
+	
+	j = {
+		"cmd": "showac"
+	}
+	cifrar(j)
+	q = client.recv(2048)
+	dec = base64.b64decode(q).decode()
+	cmd = json.loads(dec)
+	print("All Channels")
+	
+	if not cmd["data"]:
+		print("There are no channels to show!")
+	else:
+		for i in cmd["data"]:
+
+			print(i)
+
 def sendq():
 	namequeue= input("Queue Name: ")
 	data = input("Your Message: ")
@@ -155,7 +180,7 @@ def create_channel():
 	print(ju["data"])
 
 def delete_channel():
-	namechannel = input()
+	namechannel = input("Channel's Name to Delete: ")
 	j = {
 		"cmd": "deletec",
 		"channel": namechannel
@@ -163,8 +188,8 @@ def delete_channel():
 	cifrar(j)
 	q = client.recv(2048)
 	dec = base64.b64decode(q).decode()
-	ju = json.loads(dec)
-	print(ju["data"])
+	cmd = json.loads(dec)
+	print(cmd["data"])
 
 def showmy_channel():
 	j = {
@@ -175,9 +200,12 @@ def showmy_channel():
 	dec = base64.b64decode(q).decode()
 	cmd = json.loads(dec)
 	print("My Channels")
-	for i in cmd["data"]:
+	if not cmd["data"]:
+		print("There are no channels to show!")
+	else:
+		for i in cmd["data"]:
 
-		print(i)
+			print(i)
 
 def sendc():
 	namechannel= input("Queue Name: ")
@@ -220,9 +248,10 @@ while (response != "Login Failed"):
 	print("8. Create a chanel ")
 	print("9. Delete a chanel")
 	print("10. Show my chanels")
-	print("11. Send message to a chanel")
-	print("12. Subscribe a chanel")
-	print("13. Close Connection")
+	print("11. Show all chanels")
+	print("12. Send message to a chanel")
+	print("13. Subscribe a chanel")
+	print("14. Close Connection")
 	
 	option = float(input("Input your option \n"))
 
@@ -277,16 +306,20 @@ while (response != "Login Failed"):
 		showmy_channel()
 		client.close()
 		break
+	if(option == 11 ):
+		showall_channels()
+		client.close()
+		break
 	
-	if(option == 11):
+	if(option == 12):
 		sendc()
 		client.close()
 		break
 
-	if(option == 12):
+	if(option == 13):
 		subscribe_channel()
 		client.close()
 		break
-	if option == 13:
+	if option == 14:
 		close_connection()
 		break	
