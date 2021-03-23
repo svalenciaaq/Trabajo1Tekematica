@@ -7,7 +7,7 @@ import hashlib
 import json
 from message import message
 import time
-
+from channels import channel
 
 # Create Socket (TCP) Connection
 ServerSocket = socket.socket(family = socket.AF_INET, type = socket.SOCK_STREAM) 
@@ -27,6 +27,7 @@ print('Waitiing for a Connection...')
 ServerSocket.listen(10)
 HashTable = {}
 queu= []
+chann= []
 qe = ""
 queuesubscriber = ""
 
@@ -111,7 +112,19 @@ def threaded_client(connection):
         if(cmd["cmd"]  == 'pullq'):
             pullq(cmd["queue"],connection)
             break    
+        
 
+        if(cmd["cmd"] == 'channel'):
+            create_channel(cmd["channel"], name,connection)
+            break
+
+        if(cmd["cmd"] ==  'deletec'):
+            delete_channel(cmd["channel"],name,connection)
+            break
+
+        if(cmd["cmd"] == 'showmc'):
+            show_channel(name,connection)  
+            break  
     connection.close()
     print("The connection to client " + name +" has been closed.")        
 
@@ -234,6 +247,84 @@ def pullq(x,con):
     encoded = base64.b64encode(enc)
     con.send(encoded)                
 
+
+def create_channel(x,y,con):
+    if len(chann) == 0:
+        c = channel(x,y)
+        chann.append(c)
+        print(chann)
+        j={
+            "data": "channel create"
+        }
+        ju =  json.dumps(j)
+        enc = str.encode(ju)
+        encoded = base64.b64encode(enc)
+        con.send(encoded)     
+    else:
+        for i in chann:
+            if i.channe != x:
+                c = channel(x,y)
+                j={
+                    "data": "Channel create"
+                }
+                ju =  json.dumps(j)
+                enc = str.encode(ju)
+                encoded = base64.b64encode(enc)
+                con.send(encoded)     
+            else:
+                j={
+                    "data": "the channel you are trying to create already exists"
+                }
+                ju =  json.dumps(j)
+                enc = str.encode(ju)
+                encoded = base64.b64encode(enc)
+                con.send(encoded)     
+
+def delete_channel(x,y,con):
+    if len(chann) != 0:
+        for i in chann:
+            if(i.user == y):
+                if(i.channe == x):
+                    chann.remove(i)
+                    j={
+                    "data": "Delete successfully"
+                    }
+                    ju =  json.dumps(j)
+                    enc = str.encode(ju)
+                    encoded = base64.b64encode(enc)
+                    con.send(encoded)                      
+
+    else:
+        j={
+            "data": "There are no channels for deleting"
+        }
+        ju =  json.dumps(j)
+        enc = str.encode(ju)
+        encoded = base64.b64encode(enc)
+        con.send(encoded)                      
+
+
+def show_channel(x,con):
+    qe = ""
+    ro = ""
+    if len(chann) != 0:
+        for i in chann:
+            if(i.user == x):
+                qe = i.channe
+                ro += qe.rstrip("\n") + " ".rstrip("\n")
+    
+    else:
+        ro = "There are no channels to show"  
+
+    j ={
+         "data": ro
+    }        
+    print(j)  
+    ju = json.dumps(j)
+    enc = str.encode(ju)
+    encoded = base64.b64encode(enc)
+
+    con.send(encoded)
     
     
 

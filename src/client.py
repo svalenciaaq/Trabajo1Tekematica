@@ -145,6 +145,45 @@ def queue_subscribe():
 	client.send(encoded)
 
 
+def create_channel():
+	namechannel= input("Ingrese el nombre de la cola que quiere enviar el mensaje")
+	j = {
+		"cmd": "channel",
+		"user": name,
+		"channel": namechannel,
+	}
+	cifrar(j)
+	q = client.recv(2048)
+	dec = base64.b64decode(q).decode()
+	ju = json.loads(dec)
+	print(ju["data"])
+
+def delete_channel():
+	namechannel = input()
+	j = {
+		"cmd": "deletec",
+		"channel": namechannel
+	}
+	cifrar(j)
+	q = client.recv(2048)
+	dec = base64.b64decode(q).decode()
+	ju = json.loads(dec)
+	print(ju["data"])
+
+def showmy_channel():
+	j = {
+		"cmd": "showmc"
+	}
+	cifrar(j)
+	q = client.recv(2048)
+	dec = base64.b64decode(q).decode()
+	cmd = json.loads(dec)
+	print("My Channels")
+	for i in cmd["data"]:
+
+		print(i)
+
+
 while (response != "Login Failed"):
 	print("\n")
 	print("Choose An Option ")
@@ -197,5 +236,19 @@ while (response != "Login Failed"):
 		showall_queues()
 		client.close
 		break
+	
+	if(option == 9):
+		create_channel()
+		client.close()
+		break
+	
+	if(option == 10):
+		delete_channel()
+		client.close()
+		break
 
+	if(option == 11 ):
+		showmy_channel()
+		client.close()
+		break
 
