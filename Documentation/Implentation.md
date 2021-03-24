@@ -6,18 +6,23 @@ To begin with, we started by developing a server and a client that could connect
 client
 ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/c1.png)
  
+ 
 server
  ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/s1.png)
  
 Then, with a connection already established, we proceeded to generate a client authentication process, asking for username and password and storing this information in a hashtable on the server. In case the user already exists it verifies that the password matches, if it does not exist it will create a new one. 
 
 
-
 Client
+
   ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/c2.png)
+  
+  
 Server 
 ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/s2.png)
 ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/s3.png)
+
+
 With these connection and verification steps we proceed to develop all the application logic.
 For this, a series of methods were created in both the client and the server. These methods serve as communicators depending on what the client wants to do. 
 The Queue, Channel and Message classes had to be developed for the correct functioning of the application. 
