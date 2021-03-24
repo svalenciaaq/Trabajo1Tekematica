@@ -64,6 +64,9 @@ Class that creates channel type objects which will have a unique name, subscribe
  ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/1.png)
 
 * 3. We will select an option of the 16 available ones. 
+
+
+
 * ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/2.png)
 * 4.	Create a queue will allow us to create a new queue asking for a name, if the name is already created it will not allow us to create it. 
 * ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/3.png)
