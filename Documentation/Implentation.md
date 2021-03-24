@@ -97,6 +97,9 @@ Class that creates channel type objects which will have a unique name, subscribe
 * ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/16.png)
 ## Running AWS SERVER
 ### Server.py running into aws machine
-![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/server.png)
+* ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/server.PNG)
+* ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/conec.PNG)
+* ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/cc.PNG)
+* ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/response.PNG)
 
 
