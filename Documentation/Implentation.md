@@ -1,26 +1,26 @@
-**Implementation and use of the system**
+# Implementation and use of the system**
 
 This document explains in a step-by-step manner how the system was implemented and how it is used.
 To begin with, we started by developing a server and a client that could connect to each other. For that we used the methods provided by socket in Python. 
 
-client
+##client
 ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/c1.png)
  
  
-server
- ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/s1.png)
+##server
+* ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/s1.png)
  
 Then, with a connection already established, we proceeded to generate a client authentication process, asking for username and password and storing this information in a hashtable on the server. In case the user already exists it verifies that the password matches, if it does not exist it will create a new one. 
 
 
-Client
+## Client
 
   ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/c2.png)
   
   
-Server 
-![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/s2.png)
-![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/s3.png)
+## Server 
+* ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/s2.png)
+* ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/s3.png)
 
 
 With these connection and verification steps we proceed to develop all the application logic.
