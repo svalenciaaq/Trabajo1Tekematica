@@ -14,8 +14,8 @@ class channel:
 
 
     def pushs(self,x):
-        self.channels.append(x)
+        self.subscribers.append(x)
 
     def pops(self,x):
-        self.channels.remove(x)    
+        self.subscribers.remove(x)    
             

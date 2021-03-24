@@ -127,7 +127,10 @@ def threaded_client(connection):
             break  
         if(cmd["cmd"] == 'showac'):
             showall_channels(name,connection)  
-            break  
+            break 
+        if(cmd["cmd"] == 'showmcs'):
+            show_channelsus(name,connection)  
+            break   
 
         if(cmd["cmd"] ==  "subscribec"):
             subscribe_channel(cmd["namequeue"],name,connection)
@@ -281,7 +284,6 @@ def create_channel(x,y,con):
     encoded = base64.b64encode(enc)
     con.send(encoded)     
      
-
 def delete_channel(x,y,con):
     j = ""
     correctUser = False
@@ -308,6 +310,7 @@ def delete_channel(x,y,con):
     con.send(encoded)                       
 
 def show_channel(x,con):
+
     channelsname = []
     for i in chann:
         if(i.user == x):
@@ -320,8 +323,26 @@ def show_channel(x,con):
     enc = str.encode(ju)
     encoded = base64.b64encode(enc)
     con.send(encoded)
+       
+def show_channelsus(x,con):
     
-    
+    channelsname = []
+    print("usuario " + x)
+    for i in chann:
+        print("canal" + i.channe)
+        for s in i.subscribers:
+            if(s == x):
+              print("entre")
+              channelsname.append(i.channe)
+            break
+    j ={
+        "data": channelsname
+    }    
+    ju = json.dumps(j)
+    enc = str.encode(ju)
+    encoded = base64.b64encode(enc)
+    con.send(encoded)  
+
 def showall_channels(x, con):
     channelnames = []
     info = ""
@@ -341,6 +362,7 @@ def subscribe_channel(x,y,con):
         for i in chann:
             if i.channe == x:
                 i.pushs(y)
+                print("usuario " + y + " suscrito a " + i.channe)
                 create_queuec(x,y)
                 j ={
                 "data": "Successfully subscribed"
@@ -367,10 +389,11 @@ def sendc(x,y,z,con):
     j = ""
     msg = message(x,y,z)
     
-    j = "There is no Queue named \"" + msg.queue + "\"!"
+    j = "There is no Channel named \"" + msg.queue + "\"!"
     for i in chann:
         if i.channe == msg.queue:
             i.push(msg.data)
+            
             j = "Message saved sucessfully!"
             for n in subscribers:
                 if n.queu == i.channe:
