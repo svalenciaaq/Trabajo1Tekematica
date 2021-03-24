@@ -111,7 +111,10 @@ def threaded_client(connection):
 
         if(cmd["cmd"]  == 'pullq'):
             pullq(cmd["queue"],connection)
-            break    
+            break   
+        if(cmd["cmd"]  == 'pullc'):
+            pullc(cmd["chan"],name, connection)
+            break   
         
 
         if(cmd["cmd"] == 'channel'):
@@ -262,6 +265,31 @@ def pullq(x,con):
     encoded = base64.b64encode(enc)
     con.send(encoded)                
 
+def pullc(x,y, con):
+    j=""
+    mess = ""
+    queueExist = False
+    j = "There is no Channel named \"" + x + "\""
+    for i in chann:
+        if i.channe == x:
+            for q in i.queues:
+                if(q.user == y):
+                    mess = q.pop()
+                    if(mess == ""):
+                        j = "No messages found in Channel \"" + x + "\"" 
+                        print("no messages found!")
+                    else:
+                        j =  "Message: " + mess
+                        print(j)
+                    break
+    je = {
+        "data": j
+    }   
+    ju = json.dumps(je)
+    enc = str.encode(ju)
+    encoded = base64.b64encode(enc)
+    con.send(encoded)       
+
 def create_channel(x,y,con):
     c = channel(x, y)
     j = ""
@@ -332,7 +360,6 @@ def show_channelsus(x,con):
         print("canal" + i.channe)
         for s in i.subscribers:
             if(s == x):
-              print("entre")
               channelsname.append(i.channe)
             break
     j ={
@@ -358,27 +385,25 @@ def showall_channels(x, con):
     con.send(encoded)        
 
 def subscribe_channel(x,y,con):
+    j ="There is no Channel named \"" + x + "\""
     if len(chann) != 0:
         for i in chann:
             if i.channe == x:
+                userqueue = queue(x, y)
+                i.push(userqueue)
                 i.pushs(y)
+                
                 print("usuario " + y + " suscrito a " + i.channe)
                 create_queuec(x,y)
-                j ={
-                "data": "Successfully subscribed"
-                }    
-                ju = json.dumps(j)
-                enc = str.encode(ju)
-                encoded = base64.b64encode(enc)
-                con.send(encoded)
-    else:
-        j ={
-        "data": "There are no channels to subscribe to"
-        }    
-        ju = json.dumps(j)
-        enc = str.encode(ju)
-        encoded = base64.b64encode(enc)
-        con.send(encoded)    
+                j ="Successfully subscribed"
+                
+    je = {
+                "data": j
+            }   
+    ju = json.dumps(je)
+    enc = str.encode(ju)
+    encoded = base64.b64encode(enc)
+    con.send(encoded)    
 
 def create_queuec(x,y):
     q = queue(x, y)
@@ -392,14 +417,11 @@ def sendc(x,y,z,con):
     j = "There is no Channel named \"" + msg.queue + "\"!"
     for i in chann:
         if i.channe == msg.queue:
-            i.push(msg.data)
-            
+            for q in i.queues:
+                q.push(msg.data)
+                print("mensaje " + msg.data + " guardado en la cola de " + q.user)
             j = "Message saved sucessfully!"
-            for n in subscribers:
-                if n.queu == i.channe:
-                        n.push(msg.data)
-                        print(n.messages)
-                        print("hasta aqui entre")
+           
             break         
     je = {
         "data": j
