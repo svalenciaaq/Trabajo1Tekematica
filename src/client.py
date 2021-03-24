@@ -155,6 +155,19 @@ def pullq():
 	cmd = json.loads(dec)
 	print(cmd["data"])
 
+def pullc():
+	chan=  input("Channel's name you want your message from: ")
+	j = {
+		"cmd": "pullc",
+		"chan": chan
+
+	}
+	cifrar(j)
+	q = client.recv(2048)
+	dec = base64.b64decode(q).decode()
+	cmd = json.loads(dec)
+	print(cmd["data"])
+
 def queue_subscribe():
 	qu = input("Enter the queue you want to subscribe to: ")
 	j ={
@@ -224,7 +237,7 @@ def showmy_channelsus():
 			print(i)
 
 def sendc():
-	namechannel= input("Queue Name: ")
+	namechannel= input("Channel Name: ")
 	data = input("Your Message: ")
 	j = {
 		"cmd": "sendc",
@@ -269,7 +282,8 @@ while (response != "Login Failed"):
 	print("12. Show channels i am suscribed")
 	print("13. Send message to a chanel")
 	print("14. Subscribe a chanel")
-	print("15. Close Connection")
+	print("15. Pull a message from a channel")
+	print("16. Close Connection")
 	
 	option = float(input("Input your option \n"))
 
@@ -343,5 +357,9 @@ while (response != "Login Failed"):
 		client.close()
 		break
 	if option == 15:
+		pullc()
+		close_connection()
+		break	
+	if option == 16:
 		close_connection()
 		break	
