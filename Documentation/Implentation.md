@@ -27,37 +27,37 @@ With these connection and verification steps we proceed to develop all the appli
 For this, a series of methods were created in both the client and the server. These methods serve as communicators depending on what the client wants to do. 
 The Queue, Channel and Message classes had to be developed for the correct functioning of the application. 
 Each class and the client and server methods will be explained below.
-**Queue**
+## **Queue**
 Class that creates queue type objects with unique names associated to a user and with a list of messages.
-**Attributes:** 
+### **Attributes:** 
 - Name: Queue name, this will be unique.
 - User: User who created it, this will only be used to be deleted by him.
 - Message: List of messages that the queue will store.
-**Methods:**
+### **Methods:**
 - Push: receive a message and store it in the message list.
 - Pop: Pops the message in the first position of the message list.
 
-**Messages**
+## **Messages**
 Class that creates message type objects.
-**Attributes:** 
+### **Attributes:** 
 - User: User that sends it.
 - Queue: Name of the queue to which it is sent.
 - Data: Message information
 
-**Channels**
+## **Channels**
 Class that creates channel type objects which will have a unique name, subscribers, subscriber queues, and a user creator.
-**Attributes:** 
+### **Attributes:** 
 - Channe: Channel name
 - User: Creator user
 - Queues: list of subscriber queues
 - Subscribers: list of subscribers
-**Methods:** 
+### **Methods:** 
 - Pushq: saves a queue in the queue list
 - Popq: returns a queue from the queue list
 - Pushs: Saves a subscriber in the subscribers list
 - Pops: Returns a subscriber from the subscribers list
 
-**Using the system**
+## **Using the system**
 1.	Eject the client.py file as long as the server is already running, otherwise run the server.
 2. We will be asked for user and password, we create one or enter the data of an already created account.
  ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/1.png)
