@@ -358,7 +358,7 @@ while (response != "Login Failed"):
 		break
 	if option == 15:
 		pullc()
-		close_connection()
+		client.close()
 		break	
 	if option == 16:
 		close_connection()

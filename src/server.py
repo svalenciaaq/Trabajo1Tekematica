@@ -272,6 +272,7 @@ def pullc(x,y, con):
     j = "There is no Channel named \"" + x + "\""
     for i in chann:
         if i.channe == x:
+            j = "You are not a suscriber of this channel, if you want to receive messages please suscribe!"
             for q in i.queues:
                 if(q.user == y):
                     mess = q.pop()
@@ -417,12 +418,17 @@ def sendc(x,y,z,con):
     j = "There is no Channel named \"" + msg.queue + "\"!"
     for i in chann:
         if i.channe == msg.queue:
-            for q in i.queues:
-                q.push(msg.data)
-                print("mensaje " + msg.data + " guardado en la cola de " + q.user)
-            j = "Message saved sucessfully!"
-           
-            break         
+            j = "You are not a subscriber of this channel, if you want to send messages subscribe" 
+            for s in i.subscribers:
+                if(s == x):
+                    for q in i.queues:
+                        q.push(msg.data)
+                        print("mensaje " + msg.data + " guardado en la cola de " + q.user)
+                    j = "Message saved sucessfully!"
+                
+                    break  
+                
+                         
     je = {
         "data": j
     }   
