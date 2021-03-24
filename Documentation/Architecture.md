@@ -1,2 +1,2 @@
 # Architecture
-![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/resources/component.png)
+![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/component.png)
