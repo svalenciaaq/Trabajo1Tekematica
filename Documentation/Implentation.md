@@ -95,3 +95,8 @@ Class that creates channel type objects which will have a unique name, subscribe
 * ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/15.png)
 * 17.	Close connection closes the session. 
 * ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/16.png)
+## Running AWS SERVER
+### Server.py running into aws machine
+![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/server.png)
+
+
