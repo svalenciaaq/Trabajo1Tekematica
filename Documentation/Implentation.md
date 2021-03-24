@@ -61,7 +61,7 @@ Class that creates channel type objects which will have a unique name, subscribe
 * 1.	Eject the client.py file as long as the server is already running, otherwise run the server.
 * 2. We will be asked for user and password, we create one or enter the data of an already created account.
 
-* ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/1.png)
+ ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/1.png)
 
 * 3. We will select an option of the 16 available ones. 
 * ![alt text](https://raw.githubusercontent.com/svalenciaaq/Trabajo1Telematica/master/resources/2.png)
